@@ -243,7 +243,7 @@ async def forwardPrivateDialog(clients):
             if not dialog.is_user:
                 continue
             message = dialog.message
-            if time.time() - datetime.timestamp(message.date) > 48 * 60 * 60:
+            if time.time() - datetime.timestamp(message.date) > 72 * 60 * 60:
                 continue
             if S.existing_private_chat_user.contain(dialog.id):
                 continue
@@ -268,24 +268,7 @@ async def run():
         except:
             print(user, setting)
         clients[user] = client
-        # await client.get_dialogs() # may comment out
     await forwardPrivateDialog(clients)
-    await addMute(clients[S.default_client_name], S)
-    await addMuteFromKick(clients, S)
-    await unkickAllInculdingChannels(clients, S)
-    await kickAllInculdingChannels(clients, S)
-    await deleteAll(clients, S)
-    await checkUserID(clients, S, C)
-    await checkUserChannel(clients['yun'])
-    await checkMemberHistory(clients['yun'])
-    # await deleteOld(clients, S) # on demand
-    await preProcess(clients, S.groups)
-    await addChannel(clients, S)
-    await process(clients)
-    await unpinTranslated(clients['yun'])
-    await replyTranslated(clients['yun'])
-    await twitterBlock(clients)
-    await twitterHideReply(clients['yun'])
     for _, client in clients.items():
         await client.disconnect()
     
