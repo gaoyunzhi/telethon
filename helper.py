@@ -10,9 +10,6 @@ from telethon.tl.types import ChatBannedRights, ChannelParticipantsSearch
 from telethon.tl.functions.channels import GetParticipantsRequest
 import plain_db
 
-namelist = plain_db.load('../../moderator/db/name', isIntValue=False)
-kicklist = plain_db.loadKeyOnlyDB('../../moderator/db/kicklist')
-mutelist = plain_db.loadKeyOnlyDB('../../moderator/db/mutelist')
 translate_record = plain_db.loadLargeDB('translate_record')
 translate_replied = plain_db.loadKeyOnlyDB('translate_replied')
 
