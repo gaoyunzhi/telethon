@@ -104,43 +104,6 @@ async def replyTranslated(client):
         message = await client.get_messages(chat, ids=int(message_id))
         await message.reply('感谢！已发布~~')
 
-async def checkMemberHistory(client):
-    channel = await client.get_entity(1603460097)
-    group_posts = await client(GetHistoryRequest(peer=channel, limit=30,
-            offset_date=None, offset_id=0, max_id=0, min_id=0, add_offset=0, hash=0))
-    for message in group_posts.messages:
-        if not message.raw_text:
-            continue
-        if message.raw_text.startswith('done'):
-            continue
-        result = 'done: ' + message.raw_text + '\n'
-        dialogs = await client.get_dialogs()
-        for dialog in dialogs:
-            if message.raw_text.strip() in str(dialog.entity):
-                break
-        if message.raw_text.strip() not in str(dialog.entity):
-            await client.edit_message(
-                channel,
-                message.id,
-                text = result + 'group not found',
-                parse_mode='Markdown',
-                link_preview=False)
-            continue
-        participants = await client(GetParticipantsRequest(
-            dialog.entity, ChannelParticipantsSearch(''), 0, 100, 0
-        ))
-        for user in participants.users:
-            if kicklist.contain(user.id):
-                result +='\n%d in kicklist %s' % (user.id, namelist.get(user.id, '[%s](tg://user?id=%d)' % (user.first_name, user.id)))
-            if mutelist.contain(user.id):
-                result +='\n%d in mutelist %s' % (user.id, namelist.get(user.id, '[%s](tg://user?id=%d)' % (user.first_name, user.id)))
-        await client.edit_message(
-            channel,
-            message.id,
-            text = result,
-            parse_mode='Markdown',
-            link_preview=False)
-
 async def checkUserChannel(client):
     channel = await client.get_entity(1618113434)
     group_posts = await client(GetHistoryRequest(peer=channel, limit=30,
