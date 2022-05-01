@@ -503,33 +503,6 @@ async def deleteOldForGroup(client, group, dry_run = False, hour_cut = 20):
             count += result
     return count
 
-async def deleteOld(client_map, S):    
-    count = 0 
-    # 暂时不用，删除所有旧历史
-    for client_name, client in client_map.items():
-        groups = await client.get_dialogs()
-        for group in groups:
-            if group.name not in ['Backlight.Town 逆光小镇', '独自', '在花の科技花 🎗 元宇宙', 
-                '平权观察', 'Yonezu KenShu 抱抱群', '吕频']:
-                continue
-            result = await deleteOldForGroup(client, group.entity)
-            if result > 0:
-                print('deleted %s messages in %s' % (result, group.name))
-            count += result
-    # 这段是删除特定promote群组旧历史
-    # for gid in S.groups:
-    #     for client_name, client in client_map.items():
-    #         try:
-    #             group = await client.get_entity(gid)
-    #         except:
-    #             continue
-    #         if not group.megagroup:
-    #             continue
-    #         result = await deleteOldForGroup(client, group)
-    #         count += result
-    if count != 0:
-        print('deleted old message:', count)
-
 async def checkUserID(client_map, S, C):
     client = client_map['yun']
     channel = await client.get_entity(S.check_id_channel_id)
